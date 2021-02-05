@@ -34,9 +34,13 @@ var HFUTwitter;
         _response.setHeader("content-type", "text/html; charset=utf-8");
         _response.setHeader("Access-Control-Allow-Origin", "*");
         let q = Url.parse(_request.url, true);
-        let task = q.pathname.slice(1, q.pathname.length - 1);
+        let task = q.pathname.slice(1, q.pathname.length);
         console.log(task);
         console.log(q.search);
+        if (task == "signin") {
+            _response.write("trying to sign in");
+            _response.end();
+        }
     }
 })(HFUTwitter = exports.HFUTwitter || (exports.HFUTwitter = {}));
 /*

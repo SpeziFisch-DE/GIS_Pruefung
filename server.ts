@@ -37,9 +37,14 @@ export namespace HFUTwitter {
         _response.setHeader("Access-Control-Allow-Origin", "*");
 
         let q: Url.UrlWithParsedQuery = Url.parse(_request.url, true);
-        let task: string = q.pathname.slice(1, q.pathname.length - 1);
+        let task: string = q.pathname.slice(1, q.pathname.length);
         console.log(task);
         console.log(q.search);
+
+        if (task == "signin") {
+            _response.write("trying to sign in");
+            _response.end();
+        }
         
     }
 }

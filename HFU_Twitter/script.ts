@@ -30,7 +30,11 @@ namespace HFUTwitter {
             let url: string = "https://hfu-twitter.herokuapp.com";
             url += "/signin" + "?" + query.toString();
 
-            await fetch(url);
+            await fetch(url).then(async function (response: Response): Promise<void> {
+                let responseText: string = await response.text();
+                console.log(responseText);
+            }
+            );
         }
     }
 }

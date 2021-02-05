@@ -28,7 +28,10 @@ var HFUTwitter;
             let query = new URLSearchParams(formData);
             let url = "https://hfu-twitter.herokuapp.com";
             url += "/signin" + "?" + query.toString();
-            await fetch(url);
+            await fetch(url).then(async function (response) {
+                let responseText = await response.text();
+                console.log(responseText);
+            });
         }
     }
 })(HFUTwitter || (HFUTwitter = {}));
