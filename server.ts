@@ -37,7 +37,8 @@ export namespace HFUTwitter {
         _response.setHeader("Access-Control-Allow-Origin", "*");
 
         let q: Url.UrlWithParsedQuery = Url.parse(_request.url, true);
-        console.log(q.pathname);
+        let task: string = q.pathname.slice(1, q.pathname.length - 1);
+        console.log(task);
         console.log(q.search);
         
     }
