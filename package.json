@@ -1,0 +1,25 @@
+{
+  "name": "gis",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "dependencies": {
+    "@types/mongodb": "^3.6.3",
+    "mongodb": "^3.6.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SpeziFisch-DE/GIS.git"
+  },
+  "author": "fabian",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SpeziFisch-DE/GIS/issues"
+  },
+  "homepage": "https://github.com/SpeziFisch-DE/GIS#readme"
+}
