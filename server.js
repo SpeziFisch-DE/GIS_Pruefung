@@ -34,7 +34,7 @@ var HFUTwitter;
         _response.setHeader("content-type", "text/html; charset=utf-8");
         _response.setHeader("Access-Control-Allow-Origin", "*");
         let q = Url.parse(_request.url, true);
-        console.log(q.query);
+        console.log(q.pathname);
         console.log(q.search);
     }
 })(HFUTwitter = exports.HFUTwitter || (exports.HFUTwitter = {}));
