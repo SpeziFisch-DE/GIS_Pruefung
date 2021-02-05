@@ -2,6 +2,48 @@ import * as Http from "http";
 import * as Url from "url";
 import * as Mongo from "mongodb";
 
+export namespace HFUTwitter {
+
+    console.log("Starting server");
+    function startServer(_port: number | string): void {
+        let server: Http.Server = Http.createServer();
+        server.addListener("request", handleRequest);
+        server.addListener("listening", handleListen);
+        server.listen(_port);
+    }
+
+    let databaseUrl: string = "mongodb+srv://Fabian:Fabian@specificcluster.n4qe3.mongodb.net/hfutwitter?retryWrites=true&w=majority";
+    let users: Mongo.Collection;
+    async function connectToDatabase(_url: string): Promise<void> {
+        let options: Mongo.MongoClientOptions = { useNewUrlParser: true, useUnifiedTopology: true };
+        let mongoClient: Mongo.MongoClient = new Mongo.MongoClient(_url, options);
+        await mongoClient.connect();
+        users = mongoClient.db("Test").collection("users");
+        console.log("Database connected: " + users != undefined);
+    }
+    connectToDatabase(databaseUrl);
+
+    let port: number = Number(process.env.PORT);
+    if (!port)
+        port = 8100;
+
+    startServer(port);
+
+    function handleListen (): void {
+        console.log("listening!");
+    }
+    function handleRequest (_request: Http.IncomingMessage, _response: Http.ServerResponse): void{
+        _response.setHeader("content-type", "text/html; charset=utf-8");
+        _response.setHeader("Access-Control-Allow-Origin", "*");
+        console.log(_request.url);
+
+        let q: Url.UrlWithParsedQuery = Url.parse(_request.url, true);
+        console.log(q.path);
+        console.log(q.search);
+        
+    }
+}
+/*
 export namespace P_3_1Server {
     console.log("Starting server");
 
@@ -135,3 +177,4 @@ export namespace P_3_1Server {
         }
     }
 }
+    */
