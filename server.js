@@ -66,9 +66,9 @@ var P_3_1Server;
         _response.setHeader("Access-Control-Allow-Origin", "*");
         let q = Url.parse(_request.url, true);
         console.log(q.search);
-        let jsonString = JSON.stringify(q.query);
+        let jsonString = JSON.stringify(q.query); //convert GET-Url to Input-Object
         let input = JSON.parse(jsonString);
-        if (input.task == "register") {
+        if (input.task == "register") { // for requested registration
             let user = inputUser(input);
             if (!(await checkUser(user).catch(() => {
                 console.log("Check failed!");
@@ -82,7 +82,7 @@ var P_3_1Server;
                 _response.end();
             }
         }
-        else if (input.task == "showusers") {
+        else if (input.task == "showusers") { // for requested users
             let responseString;
             responseString = await getUsers().catch(() => {
                 console.log("failed!");
@@ -90,7 +90,7 @@ var P_3_1Server;
             _response.write("" + responseString);
             _response.end();
         }
-        else if (input.task == "signin") {
+        else if (input.task == "signin") { // for requested sign in
             if ((await checkPassword(input).catch(() => {
                 console.log("Sign in failed!");
             }))) {
