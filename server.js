@@ -33,9 +33,8 @@ var HFUTwitter;
     function handleRequest(_request, _response) {
         _response.setHeader("content-type", "text/html; charset=utf-8");
         _response.setHeader("Access-Control-Allow-Origin", "*");
-        console.log(_request.url);
         let q = Url.parse(_request.url, true);
-        console.log(q.path);
+        console.log(q.query);
         console.log(q.search);
     }
 })(HFUTwitter = exports.HFUTwitter || (exports.HFUTwitter = {}));
