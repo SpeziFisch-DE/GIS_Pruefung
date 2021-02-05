@@ -13,13 +13,13 @@ var HFUTwitter;
         server.addListener("listening", handleListen);
         server.listen(_port);
     }
-    let databaseUrl = "mongodb+srv://Fabian:Fabian@specificcluster.n4qe3.mongodb.net/hfutwitter?retryWrites=true&w=majority";
+    let databaseUrl = "mongodb+srv://Fabian:Fabian@specificcluster.n4qe3.mongodb.net/Test?retryWrites=true&w=majority";
     let users;
     async function connectToDatabase(_url) {
         let options = { useNewUrlParser: true, useUnifiedTopology: true };
         let mongoClient = new Mongo.MongoClient(_url, options);
         await mongoClient.connect();
-        users = mongoClient.db("hfutwitter").collection("users");
+        users = mongoClient.db("Test").collection("userdata");
         console.log("Database connected: " + users != undefined);
     }
     connectToDatabase(databaseUrl);

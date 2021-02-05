@@ -12,13 +12,13 @@ export namespace HFUTwitter {
         server.listen(_port);
     }
 
-    let databaseUrl: string = "mongodb+srv://Fabian:Fabian@specificcluster.n4qe3.mongodb.net/hfutwitter?retryWrites=true&w=majority";
+    let databaseUrl: string = "mongodb+srv://Fabian:Fabian@specificcluster.n4qe3.mongodb.net/Test?retryWrites=true&w=majority";
     let users: Mongo.Collection;
     async function connectToDatabase(_url: string): Promise<void> {
         let options: Mongo.MongoClientOptions = { useNewUrlParser: true, useUnifiedTopology: true };
         let mongoClient: Mongo.MongoClient = new Mongo.MongoClient(_url, options);
         await mongoClient.connect();
-        users = mongoClient.db("hfutwitter").collection("users");
+        users = mongoClient.db("Test").collection("userdata");
         console.log("Database connected: " + users != undefined);
     }
     connectToDatabase(databaseUrl);
