@@ -102,8 +102,12 @@ var HFUTwitter;
         if (task == "readusers") {
             let usersCollection = users.find();
             let usersJSON = JSON.parse(JSON.stringify(usersCollection.toArray()));
-            console.log(usersJSON);
-            _response.write(JSON.stringify(usersJSON));
+            let usersArr = [];
+            for (let i = 0; i < usersJSON.length; i++) {
+                usersArr.push(usersJSON[i].username);
+            }
+            console.log(usersArr);
+            _response.write(JSON.stringify(usersArr));
             _response.end();
         }
         if (task == "follow") {

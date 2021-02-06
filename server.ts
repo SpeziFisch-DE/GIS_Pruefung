@@ -136,9 +136,13 @@ export namespace HFUTwitter {
         }
         if (task == "readusers") {
             let usersCollection: Mongo.Cursor = users.find();
-            let usersJSON: string[] = JSON.parse(JSON.stringify(usersCollection.toArray()));
-            console.log(usersJSON);
-            _response.write(JSON.stringify(usersJSON));
+            let usersJSON: Userdata[] = JSON.parse(JSON.stringify(usersCollection.toArray()));
+            let usersArr: string[] = [];
+            for (let i: number = 0; i < usersJSON.length; i++) {
+                usersArr.push(usersJSON[i].username);
+            }
+            console.log(usersArr);
+            _response.write(JSON.stringify(usersArr));
             _response.end();
         }
         if (task == "follow") {
