@@ -21,6 +21,7 @@ var HFUTwitter;
             window.open("index.html", "_self");
         }
     }
+    let serverURL = "https://hfu-twitter.herokuapp.com";
     //Sign In Page
     if (getSubpage() == "signin.html") {
         let buttonSignin = document.getElementById("submit");
@@ -28,7 +29,7 @@ var HFUTwitter;
         async function handleToSignin(_event) {
             let formData = new FormData(document.forms[0]);
             let query = new URLSearchParams(formData);
-            let url = "https://hfu-twitter.herokuapp.com";
+            let url = serverURL;
             url += "/signin" + "?" + query.toString();
             await fetch(url).then(async function (response) {
                 let responseText = await response.text();
@@ -48,7 +49,7 @@ var HFUTwitter;
         async function handleLogin(_event) {
             let formData = new FormData(document.forms[0]);
             let query = new URLSearchParams(formData);
-            let url = "https://hfu-twitter.herokuapp.com";
+            let url = serverURL;
             url += "/login" + "?" + query.toString();
             await fetch(url).then(async function (response) {
                 let responseText = await response.text();
@@ -64,9 +65,8 @@ var HFUTwitter;
     //feed
     if (getSubpage() == "feed.html") {
         async function loadTweetJSON() {
-            //{"text": "", "username": "" }
             let tweet = [];
-            let url = "https://hfu-twitter.herokuapp.com";
+            let url = serverURL;
             url += "/loadtweets" + "?username=" + localStorage.getItem("username");
             await fetch(url).then(async function (response) {
                 let responseText = await response.text();
@@ -91,7 +91,7 @@ var HFUTwitter;
         async function handleLogin(_event) {
             let formData = new FormData(document.forms[0]);
             let query = new URLSearchParams(formData);
-            let url = "https://hfu-twitter.herokuapp.com";
+            let url = serverURL;
             url += "/tweet" + "?" + "username=" + localStorage.getItem("username") + "&" + query.toString();
             await fetch(url).then(async function (response) {
                 let responseText = await response.text();
@@ -101,6 +101,40 @@ var HFUTwitter;
         }
     }
     if (getSubpage() == "follow.html") {
+        let followDiv = document.getElementById("follow");
+        async function getAllUsers() {
+            let usersJSON = [];
+            let url = serverURL;
+            url += "/readusers";
+            await fetch(url).then(async function (response) {
+                let responseText = await response.text();
+                usersJSON = JSON.parse(responseText);
+            });
+            return usersJSON;
+        }
+        async function writeUsers() {
+            let users = await getAllUsers();
+            for (let i = 0; users.length; i++) {
+                let newUserDiv = document.createElement("div");
+                newUserDiv.setAttribute("class", "user");
+                let userName = document.createElement("p");
+                userName.innerHTML = users[i];
+                let followUser = document.createElement("button");
+                followUser.setAttribute("type", "button");
+                followUser.setAttribute("name", users[i]);
+                followUser.innerText = "follow";
+                followUser.addEventListener("click", handleFollow);
+                async function handleFollow(_event) {
+                    let url = serverURL;
+                    url += "/follow" + "?" + "username=" + users[i];
+                    await fetch(url);
+                }
+                newUserDiv.appendChild(userName);
+                newUserDiv.appendChild(followUser);
+                followDiv.appendChild(newUserDiv);
+            }
+        }
+        writeUsers();
     }
 })(HFUTwitter || (HFUTwitter = {}));
 //# sourceMappingURL=script.js.map

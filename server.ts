@@ -129,6 +129,10 @@ export namespace HFUTwitter {
             _response.write(JSON.stringify(showingTweets));
             _response.end();
         }
+        if (task == "readusers") {
+            _response.write(["SpeziFischDE"]);
+            _response.end();
+        }
         
     }
 }

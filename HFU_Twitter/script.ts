@@ -32,6 +32,8 @@ namespace HFUTwitter {
         }
     }
 
+    let serverURL: string = "https://hfu-twitter.herokuapp.com";
+
     //Sign In Page
     if (getSubpage() == "signin.html") {
         let buttonSignin: HTMLElement = document.getElementById("submit");
@@ -39,7 +41,7 @@ namespace HFUTwitter {
         async function handleToSignin(_event: Event): Promise<void> {
             let formData: FormData = new FormData(document.forms[0]);
             let query: URLSearchParams = new URLSearchParams(<any>formData);
-            let url: string = "https://hfu-twitter.herokuapp.com";
+            let url: string = serverURL;
             url += "/signin" + "?" + query.toString();
 
             await fetch(url).then(async function (response: Response): Promise<void> {
@@ -61,7 +63,7 @@ namespace HFUTwitter {
         async function handleLogin(_event: Event): Promise<void> {
             let formData: FormData = new FormData(document.forms[0]);
             let query: URLSearchParams = new URLSearchParams(<any>formData);
-            let url: string = "https://hfu-twitter.herokuapp.com";
+            let url: string = serverURL;
             url += "/login" + "?" + query.toString();
 
             await fetch(url).then(async function (response: Response): Promise<void> {
@@ -79,9 +81,8 @@ namespace HFUTwitter {
     //feed
     if (getSubpage() == "feed.html") {
         async function loadTweetJSON(): Promise<Tweet[]> {
-            //{"text": "", "username": "" }
             let tweet: Tweet[] = [];
-            let url: string = "https://hfu-twitter.herokuapp.com";
+            let url: string = serverURL;
             url += "/loadtweets" + "?username=" + localStorage.getItem("username");
 
             await fetch(url).then(async function (response: Response): Promise<void> {
@@ -110,7 +111,7 @@ namespace HFUTwitter {
         async function handleLogin(_event: Event): Promise<void> {
             let formData: FormData = new FormData(document.forms[0]);
             let query: URLSearchParams = new URLSearchParams(<any>formData);
-            let url: string = "https://hfu-twitter.herokuapp.com";
+            let url: string = serverURL;
             url += "/tweet" + "?" + "username=" + localStorage.getItem("username") + "&" + query.toString();
 
             await fetch(url).then(async function (response: Response): Promise<void> {
@@ -122,6 +123,42 @@ namespace HFUTwitter {
         }
     }
     if (getSubpage() == "follow.html") {
-        
+        let followDiv: HTMLElement = document.getElementById("follow");
+
+        async function getAllUsers(): Promise<string[]> {
+            let usersJSON: string[] = [];
+            let url: string = serverURL;
+            url += "/readusers";
+
+            await fetch(url).then(async function (response: Response): Promise<void> {
+                let responseText: string = await response.text();
+                usersJSON = JSON.parse(responseText);
+            });
+            return usersJSON;
+        }
+        async function writeUsers(): Promise<void> {
+            let users: string[] = await getAllUsers();
+            for (let i: number = 0; users.length; i++) {
+                let newUserDiv: HTMLDivElement = document.createElement("div");
+                newUserDiv.setAttribute("class", "user");
+                let userName: HTMLElement = document.createElement("p");
+                userName.innerHTML = users[i];
+                let followUser: HTMLButtonElement = document.createElement("button");
+                followUser.setAttribute("type", "button");
+                followUser.setAttribute("name", users[i]);
+                followUser.innerText = "follow";
+                followUser.addEventListener("click", handleFollow);
+                async function handleFollow(_event: Event): Promise<void> {
+                    let url: string = serverURL;
+
+                    url += "/follow" + "?" + "username=" + users[i];
+                    await fetch(url);
+                }
+                newUserDiv.appendChild(userName);
+                newUserDiv.appendChild(followUser);
+                followDiv.appendChild(newUserDiv);
+            }
+        }
+        writeUsers();
     }
 }
