@@ -70,7 +70,9 @@ export namespace HFUTwitter {
         console.log(input);
 
         if (task == "signin") {
-            if (await checkSignin(input)) {
+            if (await checkSignin(input).catch(() => {
+                console.log("Check failed!");
+            })) {
                 users.insertOne(input);
                 _response.write("signing in");
             } else {
