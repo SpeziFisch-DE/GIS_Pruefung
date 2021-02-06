@@ -1,5 +1,11 @@
 namespace HFUTwitter {
 
+    interface Tweet {
+        username: string;
+        date: Date;
+        text: string;
+    }
+
     function getSubpage(): string {
         return window.location.pathname.substring(window.location.pathname.lastIndexOf("/") + 1);
     }

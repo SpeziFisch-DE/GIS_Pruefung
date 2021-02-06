@@ -1,9 +1,9 @@
 import * as Http from "http";
 import * as Url from "url";
 import * as Mongo from "mongodb";
-/*
-export namespace HFUTwitter {
 
+export namespace HFUTwitter {
+//Startin server
     console.log("Starting server");
 
     function startServer(_port: number | string): void {
@@ -18,11 +18,8 @@ export namespace HFUTwitter {
     async function connectToDatabase(_url: string): Promise<void> {
         let options: Mongo.MongoClientOptions = { useNewUrlParser: true, useUnifiedTopology: true };
         let mongoClient: Mongo.MongoClient = new Mongo.MongoClient(_url, options);
-        await mongoClient.connect(err => {
-            const collection = mongoClient.db("Test").collection("userdata");
-            // perform actions on the collection object
-            mongoClient.close();
-          });
+        await mongoClient.connect();
+        users = mongoClient.db("Test").collection("userdata");
         console.log("Database connected: " + users != undefined);
     }
 
@@ -32,11 +29,35 @@ export namespace HFUTwitter {
 
     startServer(port);
     connectToDatabase(databaseUrl);
+//finished starting server
+
+    //interfaces
+    interface Userdata {
+        username: string;
+        fieldofstudies: string;
+        semester: string;
+        password: string;
+        tweets: string[];
+        followingIDs: string[];
+    }
 
     function handleListen (): void {
         console.log("listening!");
     }
-    function handleRequest (_request: Http.IncomingMessage, _response: Http.ServerResponse): void{
+    //interfaces end
+
+    async function checkSignin (_input: Userdata): Promise<boolean> {
+        let user: Userdata = JSON.parse(JSON.stringify(await users.findOne({ "username": _input.username })));
+        return (_input.username == user.username);
+    }
+
+    async function checkLogin (_input: Userdata): Promise<boolean> {
+        let user: Userdata = JSON.parse(JSON.stringify(await users.findOne({ "username": _input.username, "password": _input.password })));
+        return (user != undefined);
+    }
+
+
+    function handleRequest (_request: Http.IncomingMessage, _response: Http.ServerResponse): void {
         _response.setHeader("content-type", "text/html; charset=utf-8");
         _response.setHeader("Access-Control-Allow-Origin", "*");
 
@@ -44,14 +65,23 @@ export namespace HFUTwitter {
         let task: string = q.pathname.slice(1, q.pathname.length);
         console.log(task);
         console.log(q.search);
+        let jsonString: string = JSON.stringify(q.query); //convert GET-Url to Userdata-Object
+        let input: Userdata = JSON.parse(jsonString);
+        console.log(input);
 
         if (task == "signin") {
-            _response.write("trying to sign in");
+            if (checkSignin(input)) {
+                users.insertOne(input);
+                _response.write("signing in");
+            } else {
+                _response.write("username not available");
+            }
             _response.end();
         }
         
     }
-}*/
+}
+/*
 export namespace P_3_1Server {
     console.log("Starting server");
 
@@ -185,3 +215,4 @@ export namespace P_3_1Server {
         }
     }
 }
+    */
