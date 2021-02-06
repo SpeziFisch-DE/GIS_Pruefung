@@ -34,7 +34,7 @@ var HFUTwitter;
     //interfaces end
     async function checkSignin(_input) {
         let user = JSON.parse(JSON.stringify(await users.findOne({ "username": _input.username })));
-        return (_input.username == user.username);
+        return !(_input.username == user.username);
     }
     async function checkLogin(_input) {
         let user = JSON.parse(JSON.stringify(await users.findOne({ "username": _input.username, "password": _input.password })));
