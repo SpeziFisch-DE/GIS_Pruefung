@@ -110,6 +110,7 @@ export namespace HFUTwitter {
             console.log(allTweets);
             tweetingUser.tweets = JSON.stringify(allTweets);
             console.log(tweetingUser.tweets);
+            await users.findOneAndReplace({"username": input.username}, tweetingUser);
             _response.write("tweeted");
             _response.end();
         }
