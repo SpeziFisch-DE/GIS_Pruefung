@@ -40,7 +40,7 @@ var HFUTwitter;
         let user = JSON.parse(JSON.stringify(await users.findOne({ "username": _input.username, "password": _input.password })));
         return (user != undefined);
     }
-    function handleRequest(_request, _response) {
+    async function handleRequest(_request, _response) {
         _response.setHeader("content-type", "text/html; charset=utf-8");
         _response.setHeader("Access-Control-Allow-Origin", "*");
         let q = Url.parse(_request.url, true);
@@ -51,7 +51,7 @@ var HFUTwitter;
         let input = JSON.parse(jsonString);
         console.log(input);
         if (task == "signin") {
-            if (checkSignin(input)) {
+            if (await checkSignin(input)) {
                 users.insertOne(input);
                 _response.write("signing in");
             }

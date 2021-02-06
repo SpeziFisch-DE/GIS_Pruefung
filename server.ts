@@ -57,7 +57,7 @@ export namespace HFUTwitter {
     }
 
 
-    function handleRequest (_request: Http.IncomingMessage, _response: Http.ServerResponse): void {
+    async function handleRequest (_request: Http.IncomingMessage, _response: Http.ServerResponse): Promise<void> {
         _response.setHeader("content-type", "text/html; charset=utf-8");
         _response.setHeader("Access-Control-Allow-Origin", "*");
 
@@ -70,7 +70,7 @@ export namespace HFUTwitter {
         console.log(input);
 
         if (task == "signin") {
-            if (checkSignin(input)) {
+            if (await checkSignin(input)) {
                 users.insertOne(input);
                 _response.write("signing in");
             } else {
