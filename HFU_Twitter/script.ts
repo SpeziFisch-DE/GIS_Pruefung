@@ -97,7 +97,7 @@ namespace HFUTwitter {
         async function writeTweets(): Promise<void> {
             let tweets: Tweet[] = await loadTweetJSON();
             for (let i: number = 0; i < tweets.length; i++) {
-                let newTweet: HTMLElement = new HTMLDivElement();
+                let newTweet: HTMLElement = document.createElement("div");
                 newTweet.setAttribute("id", "tweet");
                 newTweet.innerHTML = "<h2>" + tweets[i].username + "</h2><p>" + tweets[i].text + "</p>";
                 feedDiv.appendChild(newTweet);

@@ -79,7 +79,7 @@ var HFUTwitter;
         async function writeTweets() {
             let tweets = await loadTweetJSON();
             for (let i = 0; i < tweets.length; i++) {
-                let newTweet = new HTMLDivElement();
+                let newTweet = document.createElement("div");
                 newTweet.setAttribute("id", "tweet");
                 newTweet.innerHTML = "<h2>" + tweets[i].username + "</h2><p>" + tweets[i].text + "</p>";
                 feedDiv.appendChild(newTweet);
