@@ -80,6 +80,9 @@ namespace HFUTwitter {
     }
     //feed
     if (getSubpage() == "feed.html") {
+        if (localStorage.getItem("username") == undefined) {
+            window.open("index.html", "_self");
+        }
         async function loadTweetJSON(): Promise<Tweet[]> {
             let tweet: Tweet[] = [];
             let url: string = serverURL;
@@ -123,6 +126,9 @@ namespace HFUTwitter {
         }
     }
     if (getSubpage() == "follow.html") {
+        if (localStorage.getItem("username") == undefined) {
+            window.open("index.html", "_self");
+        }
         let followDiv: HTMLElement = document.getElementById("follow");
 
         async function getAllUsers(): Promise<string> {
@@ -186,7 +192,6 @@ namespace HFUTwitter {
                         console.log(responseText);
                         if (followButton.innerText == "follow") {followButton.innerText = "unfollow"; }
                         else if (followButton.innerText == "unfollow") {followButton.innerText = "follow"; }
-                        window.open("follow.html", "_self");
                     });
                 }
                 newUserDiv.appendChild(followUser);

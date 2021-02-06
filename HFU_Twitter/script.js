@@ -64,6 +64,9 @@ var HFUTwitter;
     }
     //feed
     if (getSubpage() == "feed.html") {
+        if (localStorage.getItem("username") == undefined) {
+            window.open("index.html", "_self");
+        }
         async function loadTweetJSON() {
             let tweet = [];
             let url = serverURL;
@@ -101,6 +104,9 @@ var HFUTwitter;
         }
     }
     if (getSubpage() == "follow.html") {
+        if (localStorage.getItem("username") == undefined) {
+            window.open("index.html", "_self");
+        }
         let followDiv = document.getElementById("follow");
         async function getAllUsers() {
             let usersJSON = [];
@@ -166,7 +172,6 @@ var HFUTwitter;
                         else if (followButton.innerText == "unfollow") {
                             followButton.innerText = "follow";
                         }
-                        window.open("follow.html", "_self");
                     });
                 }
                 newUserDiv.appendChild(followUser);
