@@ -100,8 +100,36 @@ var HFUTwitter;
             _response.end();
         }
         if (task == "readusers") {
-            let test = ["SpezifischDE"];
-            _response.write(JSON.stringify(test));
+            let usersCollection = users.find();
+            let usersJSON = JSON.parse(JSON.stringify(usersCollection.toArray()));
+            console.log(usersJSON);
+            _response.write(JSON.stringify(usersJSON));
+            _response.end();
+        }
+        if (task == "follow") {
+            let newFollow = JSON.parse(jsonString);
+            let myUser = await users.findOne({ "username": newFollow.username });
+            myUser.followingUsers.push(newFollow.follow);
+            await users.findOneAndReplace({ "username": newFollow.username }, myUser);
+            _response.write("followed");
+            _response.end();
+        }
+        if (task == "unfollow") {
+            let newFollow = JSON.parse(jsonString);
+            let myUser = await users.findOne({ "username": newFollow.username });
+            let followInt = myUser.followingUsers.indexOf(newFollow.follow);
+            let firstArrPart = myUser.followingUsers.slice(0, followInt);
+            let lastArrPart;
+            if (myUser.followingUsers.length - 1 > followInt) {
+                lastArrPart = myUser.followingUsers.slice(followInt + 1, myUser.followingUsers.length - 1);
+            }
+            let newFollowArr = firstArrPart;
+            for (let i = 0; i < lastArrPart.length; i++) {
+                newFollowArr.push(lastArrPart[i]);
+            }
+            myUser.followingUsers = newFollowArr;
+            await users.findOneAndReplace({ "username": newFollow.username }, myUser);
+            _response.write("unfollowed");
             _response.end();
         }
     }

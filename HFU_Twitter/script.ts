@@ -125,7 +125,7 @@ namespace HFUTwitter {
     if (getSubpage() == "follow.html") {
         let followDiv: HTMLElement = document.getElementById("follow");
 
-        async function getAllUsers(): Promise<string[]> {
+        async function getAllUsers(): Promise<string> {
             let usersJSON: string[] = [];
             let url: string = serverURL;
             url += "/readusers";
@@ -134,24 +134,40 @@ namespace HFUTwitter {
                 let responseText: string = await response.text();
                 usersJSON = JSON.parse(responseText);
             });
-            return usersJSON;
+            console.log(usersJSON);
+            return JSON.stringify(usersJSON);
         }
         async function writeUsers(): Promise<void> {
-            let users: string[] = <string[]>await getAllUsers().catch(() => {
+            let writeUser: string[] = [];
+            let jsonUsers: string | void = await getAllUsers().catch(() => {
                 console.log("Check failed!");
             });
-            for (let i: number = 0; users.length; i++) {
+            writeUser = JSON.parse(<string>jsonUsers);
+            console.log(writeUser);
+            for (let i: number = 0; i < writeUser.length; i++) {
                 let newUserDiv: HTMLDivElement = document.createElement("div");
                 newUserDiv.setAttribute("class", "user");
+                followDiv.appendChild(newUserDiv);
                 let userName: HTMLElement = document.createElement("p");
-                userName.innerHTML = users[i];
+                userName.innerHTML = writeUser[i];
+                newUserDiv.appendChild(userName);
                 let followUser: HTMLButtonElement = document.createElement("button");
                 followUser.setAttribute("type", "button");
-                followUser.setAttribute("name", users[i]);
+                followUser.setAttribute("name", writeUser[i]);
                 followUser.innerText = "follow";
-                newUserDiv.appendChild(userName);
+                followUser.addEventListener("click", handleFollow);
+                async function handleFollow(_event: Event): Promise<void> {
+                    let followButton: HTMLButtonElement = <HTMLButtonElement>_event.target;
+                    let url: string = serverURL;
+                    url += "/" + followUser.innerText + "?username=" + localStorage.getItem("username") + "&follow=" + followButton.name;
+                    console.log(url);
+                    await fetch(url).then(async function (response: Response): Promise<void> {
+                        let responseText: string = await response.text();
+                        console.log(responseText);
+                        followButton.innerText = ((followButton.innerText == "follow") ? "unfollow" : "follow");
+                    });
+                }
                 newUserDiv.appendChild(followUser);
-                followDiv.appendChild(newUserDiv);
             }
         }
         writeUsers();

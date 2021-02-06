@@ -3,7 +3,7 @@ import * as Url from "url";
 import * as Mongo from "mongodb";
 
 export namespace HFUTwitter {
-//Startin server
+    //Startin server
     console.log("Starting server");
 
     function startServer(_port: number | string): void {
@@ -29,7 +29,7 @@ export namespace HFUTwitter {
 
     startServer(port);
     connectToDatabase(databaseUrl);
-//finished starting server
+    //finished starting server
 
     //interfaces
     interface Userdata {
@@ -51,24 +51,29 @@ export namespace HFUTwitter {
         username: string;
         text: string;
     }
+
+    interface Follow {
+        username: string;
+        follow: string;
+    }
     //interfaces end
 
-    function handleListen (): void {
+    function handleListen(): void {
         console.log("listening!");
     }
 
-    async function checkSignin (_input: Userdata): Promise<boolean> {
+    async function checkSignin(_input: Userdata): Promise<boolean> {
         let user: Userdata = JSON.parse(JSON.stringify(await users.findOne({ "username": _input.username })));
         return (user == undefined);
     }
 
-    async function checkLogin (_input: Userdata): Promise<boolean> {
+    async function checkLogin(_input: Userdata): Promise<boolean> {
         let user: Userdata = JSON.parse(JSON.stringify(await users.findOne({ "username": _input.username, "password": _input.password })));
         return (user != undefined);
     }
 
 
-    async function handleRequest (_request: Http.IncomingMessage, _response: Http.ServerResponse): Promise<void> {
+    async function handleRequest(_request: Http.IncomingMessage, _response: Http.ServerResponse): Promise<void> {
         _response.setHeader("content-type", "text/html; charset=utf-8");
         _response.setHeader("Access-Control-Allow-Origin", "*");
 
@@ -81,7 +86,7 @@ export namespace HFUTwitter {
         console.log(input);
 
         if (task == "signin") {
-            let responseText: ServerResponse = {"task": task, "succes": false , "username": input.username};
+            let responseText: ServerResponse = { "task": task, "succes": false, "username": input.username };
             if (await checkSignin(input).catch(() => {
                 console.log("Check failed!");
             })) {
@@ -94,7 +99,7 @@ export namespace HFUTwitter {
             _response.end();
         }
         if (task == "login") {
-            let responseText: ServerResponse = {"task": task, "succes": false , "username": input.username};
+            let responseText: ServerResponse = { "task": task, "succes": false, "username": input.username };
             if (await checkLogin(input).catch(() => {
                 console.log("Check failed!");
             })) {
@@ -104,7 +109,7 @@ export namespace HFUTwitter {
             _response.end();
         }
         if (task == "tweet") {
-            let tweetingUser: Userdata = await users.findOne({ "username": input.username});
+            let tweetingUser: Userdata = await users.findOne({ "username": input.username });
             let allTweets: Tweet[] = JSON.parse(tweetingUser.tweets);
             let newTweet: Tweet = JSON.parse(jsonString);
             console.log(allTweets);
@@ -112,16 +117,16 @@ export namespace HFUTwitter {
             console.log(allTweets);
             tweetingUser.tweets = JSON.stringify(allTweets);
             console.log(tweetingUser.tweets);
-            await users.findOneAndReplace({"username": input.username}, tweetingUser);
+            await users.findOneAndReplace({ "username": input.username }, tweetingUser);
             _response.write("tweeted");
             _response.end();
         }
         if (task == "loadtweets") {
-            let showingTweets: Tweet[] =  [];
-            let loadingUser: Userdata = await users.findOne({ "username": input.username});
+            let showingTweets: Tweet[] = [];
+            let loadingUser: Userdata = await users.findOne({ "username": input.username });
             for (let i: number = 0; i < loadingUser.followingUsers.length; i++) {
-                let follows: Userdata = await users.findOne({"username": loadingUser.followingUsers[i]});
-                let followTweets: Tweet[] = JSON.parse(follows.tweets);               
+                let follows: Userdata = await users.findOne({ "username": loadingUser.followingUsers[i] });
+                let followTweets: Tweet[] = JSON.parse(follows.tweets);
                 for (let j: number = 0; j < followTweets.length; j++) {
                     showingTweets.push(followTweets[j]);
                 }
@@ -130,11 +135,39 @@ export namespace HFUTwitter {
             _response.end();
         }
         if (task == "readusers") {
-            let test: string[] = ["SpezifischDE"];
-            _response.write(JSON.stringify(test));
+            let usersCollection: Mongo.Cursor = users.find();
+            let usersJSON: string[] = JSON.parse(JSON.stringify(usersCollection.toArray()));
+            console.log(usersJSON);
+            _response.write(JSON.stringify(usersJSON));
             _response.end();
         }
-        
+        if (task == "follow") {
+            let newFollow: Follow = JSON.parse(jsonString);
+            let myUser: Userdata = await users.findOne({ "username": newFollow.username });
+            myUser.followingUsers.push(newFollow.follow);
+            await users.findOneAndReplace({ "username": newFollow.username }, myUser);
+            _response.write("followed");
+            _response.end();
+        }
+        if (task == "unfollow") {
+            let newFollow: Follow = JSON.parse(jsonString);
+            let myUser: Userdata = await users.findOne({ "username": newFollow.username });
+            let followInt: number = myUser.followingUsers.indexOf(newFollow.follow);
+            let firstArrPart: string[] = myUser.followingUsers.slice(0, followInt);
+            let lastArrPart: string[];
+            if (myUser.followingUsers.length - 1 > followInt) {
+                lastArrPart = myUser.followingUsers.slice(followInt + 1, myUser.followingUsers.length - 1);
+            }
+            let newFollowArr: string[] = firstArrPart;
+            for (let i: number = 0; i < lastArrPart.length; i++) {
+                newFollowArr.push(lastArrPart[i]);
+            }
+            myUser.followingUsers = newFollowArr;
+            await users.findOneAndReplace({ "username": newFollow.username }, myUser);
+            _response.write("unfollowed");
+            _response.end();
+        }
+
     }
 }
 /*

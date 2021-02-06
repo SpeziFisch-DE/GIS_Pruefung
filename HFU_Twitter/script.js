@@ -110,24 +110,40 @@ var HFUTwitter;
                 let responseText = await response.text();
                 usersJSON = JSON.parse(responseText);
             });
-            return usersJSON;
+            console.log(usersJSON);
+            return JSON.stringify(usersJSON);
         }
         async function writeUsers() {
-            let users = await getAllUsers().catch(() => {
+            let writeUser = [];
+            let jsonUsers = await getAllUsers().catch(() => {
                 console.log("Check failed!");
             });
-            for (let i = 0; users.length; i++) {
+            writeUser = JSON.parse(jsonUsers);
+            console.log(writeUser);
+            for (let i = 0; i < writeUser.length; i++) {
                 let newUserDiv = document.createElement("div");
                 newUserDiv.setAttribute("class", "user");
+                followDiv.appendChild(newUserDiv);
                 let userName = document.createElement("p");
-                userName.innerHTML = users[i];
+                userName.innerHTML = writeUser[i];
+                newUserDiv.appendChild(userName);
                 let followUser = document.createElement("button");
                 followUser.setAttribute("type", "button");
-                followUser.setAttribute("name", users[i]);
+                followUser.setAttribute("name", writeUser[i]);
                 followUser.innerText = "follow";
-                newUserDiv.appendChild(userName);
+                followUser.addEventListener("click", handleFollow);
+                async function handleFollow(_event) {
+                    let followButton = _event.target;
+                    let url = serverURL;
+                    url += "/" + followUser.innerText + "?username=" + localStorage.getItem("username") + "&follow=" + followButton.name;
+                    console.log(url);
+                    await fetch(url).then(async function (response) {
+                        let responseText = await response.text();
+                        console.log(responseText);
+                        followButton.innerText = ((followButton.innerText == "follow") ? "unfollow" : "follow");
+                    });
+                }
                 newUserDiv.appendChild(followUser);
-                followDiv.appendChild(newUserDiv);
             }
         }
         writeUsers();
