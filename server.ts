@@ -38,7 +38,7 @@ export namespace HFUTwitter {
         semester: string;
         password: string;
         tweets: string;
-        followingIDs: string[];
+        followingUsers: string[];
     }
 
     interface ServerResponse {
