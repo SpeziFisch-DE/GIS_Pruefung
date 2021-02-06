@@ -48,7 +48,7 @@ export namespace HFUTwitter {
 
     async function checkSignin (_input: Userdata): Promise<boolean> {
         let user: Userdata = JSON.parse(JSON.stringify(await users.findOne({ "username": _input.username })));
-        return !(_input.username == user.username);
+        return (user == undefined);
     }
 
     async function checkLogin (_input: Userdata): Promise<boolean> {
