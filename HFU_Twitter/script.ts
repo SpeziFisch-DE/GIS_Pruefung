@@ -137,7 +137,9 @@ namespace HFUTwitter {
             return usersJSON;
         }
         async function writeUsers(): Promise<void> {
-            let users: string[] = await getAllUsers();
+            let users: string[] = <string[]>await getAllUsers().catch(() => {
+                console.log("Check failed!");
+            });
             for (let i: number = 0; users.length; i++) {
                 let newUserDiv: HTMLDivElement = document.createElement("div");
                 newUserDiv.setAttribute("class", "user");
@@ -147,13 +149,6 @@ namespace HFUTwitter {
                 followUser.setAttribute("type", "button");
                 followUser.setAttribute("name", users[i]);
                 followUser.innerText = "follow";
-                followUser.addEventListener("click", handleFollow);
-                async function handleFollow(_event: Event): Promise<void> {
-                    let url: string = serverURL;
-
-                    url += "/follow" + "?" + "username=" + users[i];
-                    await fetch(url);
-                }
                 newUserDiv.appendChild(userName);
                 newUserDiv.appendChild(followUser);
                 followDiv.appendChild(newUserDiv);

@@ -130,7 +130,8 @@ export namespace HFUTwitter {
             _response.end();
         }
         if (task == "readusers") {
-            _response.write(["SpeziFischDE"]);
+            let test: string[] = ["SpezifischDE"];
+            _response.write(JSON.stringify(test));
             _response.end();
         }
         

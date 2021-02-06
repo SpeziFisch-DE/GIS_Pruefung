@@ -100,7 +100,8 @@ var HFUTwitter;
             _response.end();
         }
         if (task == "readusers") {
-            _response.write(["SpeziFischDE"]);
+            let test = ["SpezifischDE"];
+            _response.write(JSON.stringify(test));
             _response.end();
         }
     }

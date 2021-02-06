@@ -113,7 +113,9 @@ var HFUTwitter;
             return usersJSON;
         }
         async function writeUsers() {
-            let users = await getAllUsers();
+            let users = await getAllUsers().catch(() => {
+                console.log("Check failed!");
+            });
             for (let i = 0; users.length; i++) {
                 let newUserDiv = document.createElement("div");
                 newUserDiv.setAttribute("class", "user");
@@ -123,12 +125,6 @@ var HFUTwitter;
                 followUser.setAttribute("type", "button");
                 followUser.setAttribute("name", users[i]);
                 followUser.innerText = "follow";
-                followUser.addEventListener("click", handleFollow);
-                async function handleFollow(_event) {
-                    let url = serverURL;
-                    url += "/follow" + "?" + "username=" + users[i];
-                    await fetch(url);
-                }
                 newUserDiv.appendChild(userName);
                 newUserDiv.appendChild(followUser);
                 followDiv.appendChild(newUserDiv);
