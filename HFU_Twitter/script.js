@@ -139,7 +139,7 @@ var HFUTwitter;
                         let responseText = await response.text();
                         console.log(responseText);
                         let responseObj = JSON.parse(responseText);
-                        check = (responseObj.task == "checkfollow" && responseObj.succes);
+                        check = !responseObj.succes;
                     });
                     return check;
                 }
@@ -160,7 +160,13 @@ var HFUTwitter;
                     await fetch(url).then(async function (response) {
                         let responseText = await response.text();
                         console.log(responseText);
-                        followButton.innerText = ((followButton.innerText == "follow") ? "unfollow" : "follow");
+                        if (followButton.innerText == "follow") {
+                            followButton.innerText = "unfollow";
+                        }
+                        else if (followButton.innerText == "unfollow") {
+                            followButton.innerText = "follow";
+                        }
+                        window.open("follow.html", "_self");
                     });
                 }
                 newUserDiv.appendChild(followUser);

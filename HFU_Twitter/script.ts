@@ -163,7 +163,7 @@ namespace HFUTwitter {
                         let responseText: string = await response.text();
                         console.log(responseText);
                         let responseObj: ServerResponse = JSON.parse(responseText);
-                        check = (responseObj.task == "checkfollow" && responseObj.succes);
+                        check = !responseObj.succes;
                     });
                     return check;
                 }
@@ -184,7 +184,9 @@ namespace HFUTwitter {
                     await fetch(url).then(async function (response: Response): Promise<void> {
                         let responseText: string = await response.text();
                         console.log(responseText);
-                        followButton.innerText = ((followButton.innerText == "follow") ? "unfollow" : "follow");
+                        if (followButton.innerText == "follow") {followButton.innerText = "unfollow"; }
+                        else if (followButton.innerText == "unfollow") {followButton.innerText = "follow"; }
+                        window.open("follow.html", "_self");
                     });
                 }
                 newUserDiv.appendChild(followUser);

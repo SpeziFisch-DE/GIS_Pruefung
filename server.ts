@@ -158,14 +158,11 @@ export namespace HFUTwitter {
             let newFollow: Follow = JSON.parse(jsonString);
             let myUser: Userdata = await users.findOne({ "username": newFollow.username });
             let followInt: number = myUser.followingUsers.indexOf(newFollow.follow);
-            let firstArrPart: string[] = myUser.followingUsers.slice(0, followInt);
-            let lastArrPart: string[];
+            let newFollowArr: string[] = myUser.followingUsers.slice(0, followInt);
             if (myUser.followingUsers.length - 1 > followInt) {
-                lastArrPart = myUser.followingUsers.slice(followInt + 1, myUser.followingUsers.length - 1);
-            }
-            let newFollowArr: string[] = firstArrPart;
-            for (let i: number = 0; i < lastArrPart.length; i++) {
-                newFollowArr.push(lastArrPart[i]);
+                for (let i: number = followInt + 1; i < myUser.followingUsers.length; i++) {
+                    newFollowArr.push(myUser.followingUsers[i]);
+                }
             }
             myUser.followingUsers = newFollowArr;
             await users.findOneAndReplace({ "username": newFollow.username }, myUser);

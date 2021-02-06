@@ -123,14 +123,11 @@ var HFUTwitter;
             let newFollow = JSON.parse(jsonString);
             let myUser = await users.findOne({ "username": newFollow.username });
             let followInt = myUser.followingUsers.indexOf(newFollow.follow);
-            let firstArrPart = myUser.followingUsers.slice(0, followInt);
-            let lastArrPart;
+            let newFollowArr = myUser.followingUsers.slice(0, followInt);
             if (myUser.followingUsers.length - 1 > followInt) {
-                lastArrPart = myUser.followingUsers.slice(followInt + 1, myUser.followingUsers.length - 1);
-            }
-            let newFollowArr = firstArrPart;
-            for (let i = 0; i < lastArrPart.length; i++) {
-                newFollowArr.push(lastArrPart[i]);
+                for (let i = followInt + 1; i < myUser.followingUsers.length; i++) {
+                    newFollowArr.push(myUser.followingUsers[i]);
+                }
             }
             myUser.followingUsers = newFollowArr;
             await users.findOneAndReplace({ "username": newFollow.username }, myUser);
