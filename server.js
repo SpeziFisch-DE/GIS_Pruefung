@@ -106,7 +106,7 @@ var HFUTwitter;
             for (let i = 0; i < usersJSON.length; i++) {
                 usersArr.push(usersJSON[i].username);
             }
-            console.log(usersArr);
+            console.log(usersJSON);
             _response.write(JSON.stringify(usersArr));
             _response.end();
         }
