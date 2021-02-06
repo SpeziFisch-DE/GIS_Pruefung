@@ -85,12 +85,9 @@ namespace HFUTwitter {
             url += "/loadtweets" + "?username=" + localStorage.getItem("username");
 
             await fetch(url).then(async function (response: Response): Promise<void> {
-                let jsonTweets: string = "";
                 let responseText: string = await response.text();
                 console.log(responseText);
-                jsonTweets = JSON.stringify(responseText);
-                if (jsonTweets != undefined)
-                tweet = JSON.parse(jsonTweets);
+                tweet = JSON.parse(responseText);
             }
             );
             return tweet;
@@ -119,8 +116,12 @@ namespace HFUTwitter {
             await fetch(url).then(async function (response: Response): Promise<void> {
                 let responseText: string = await response.text();
                 console.log(responseText);
+                window.open("feed.html", "_self");
             }
             );
         }
+    }
+    if (getSubpage() == "follow.html") {
+        
     }
 }

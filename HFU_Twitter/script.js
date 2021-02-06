@@ -69,12 +69,9 @@ var HFUTwitter;
             let url = "https://hfu-twitter.herokuapp.com";
             url += "/loadtweets" + "?username=" + localStorage.getItem("username");
             await fetch(url).then(async function (response) {
-                let jsonTweets = "";
                 let responseText = await response.text();
                 console.log(responseText);
-                jsonTweets = JSON.stringify(responseText);
-                if (jsonTweets != undefined)
-                    tweet = JSON.parse(jsonTweets);
+                tweet = JSON.parse(responseText);
             });
             return tweet;
         }
@@ -99,8 +96,11 @@ var HFUTwitter;
             await fetch(url).then(async function (response) {
                 let responseText = await response.text();
                 console.log(responseText);
+                window.open("feed.html", "_self");
             });
         }
+    }
+    if (getSubpage() == "follow.html") {
     }
 })(HFUTwitter || (HFUTwitter = {}));
 //# sourceMappingURL=script.js.map
