@@ -81,7 +81,7 @@ var HFUTwitter;
             _response.end();
         }
         if (task == "loadtweets") {
-            _response.write("load");
+            _response.write("[]");
             _response.end();
         }
     }

@@ -62,7 +62,8 @@ var HFUTwitter;
     //feed
     if (getSubpage() == "feed.html") {
         async function loadTweetJSON() {
-            let tweet = [{ "text": "", "username": "" }];
+            //{"text": "", "username": "" }
+            let tweet = [];
             let url = "https://hfu-twitter.herokuapp.com";
             url += "/loadtweets" + "?username=" + localStorage.getItem("username");
             await fetch(url).then(async function (response) {
@@ -92,7 +93,7 @@ var HFUTwitter;
             let formData = new FormData(document.forms[0]);
             let query = new URLSearchParams(formData);
             let url = "https://hfu-twitter.herokuapp.com";
-            url += "/tweet" + "?" + "username=" + localStorage.getItem("username") + query.toString();
+            url += "/tweet" + "?" + "username=" + localStorage.getItem("username") + "&" + query.toString();
             await fetch(url).then(async function (response) {
                 let responseText = await response.text();
                 console.log(responseText);

@@ -77,7 +77,8 @@ namespace HFUTwitter {
     //feed
     if (getSubpage() == "feed.html") {
         async function loadTweetJSON(): Promise<Tweet[]> {
-            let tweet: Tweet[] = [{"text": "", "username": "" }];
+            //{"text": "", "username": "" }
+            let tweet: Tweet[] = [];
             let url: string = "https://hfu-twitter.herokuapp.com";
             url += "/loadtweets" + "?username=" + localStorage.getItem("username");
 
@@ -111,7 +112,7 @@ namespace HFUTwitter {
             let formData: FormData = new FormData(document.forms[0]);
             let query: URLSearchParams = new URLSearchParams(<any>formData);
             let url: string = "https://hfu-twitter.herokuapp.com";
-            url += "/tweet" + "?" + "username=" + localStorage.getItem("username") + query.toString();
+            url += "/tweet" + "?" + "username=" + localStorage.getItem("username") + "&" + query.toString();
 
             await fetch(url).then(async function (response: Response): Promise<void> {
                 let responseText: string = await response.text();
