@@ -17,9 +17,12 @@ export namespace HFUTwitter {
     let users: Mongo.Collection;
     async function connectToDatabase(_url: string): Promise<void> {
         let options: Mongo.MongoClientOptions = { useNewUrlParser: true, useUnifiedTopology: true };
-        let mongoClient: Mongo.MongoClient = new Mongo.MongoClient(_url);
-        await mongoClient.connect();
-        users = mongoClient.db("Test").collection("users");
+        let mongoClient: Mongo.MongoClient = new Mongo.MongoClient(_url, options);
+        await mongoClient.connect(err => {
+            const collection = mongoClient.db("Test").collection("userdata");
+            // perform actions on the collection object
+            mongoClient.close();
+          });
         console.log("Database connected: " + users != undefined);
     }
     connectToDatabase(databaseUrl);
