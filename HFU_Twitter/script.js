@@ -70,7 +70,8 @@ var HFUTwitter;
                 let responseText = await response.text();
                 console.log(responseText);
                 jsonTweets = responseText;
-                tweet = JSON.parse(jsonTweets);
+                if (jsonTweets != undefined)
+                    tweet = JSON.parse(jsonTweets);
             });
             return tweet;
         }
