@@ -37,8 +37,14 @@ export namespace HFUTwitter {
         fieldofstudies: string;
         semester: string;
         password: string;
-        tweets: string[];
+        tweets: string;
         followingIDs: string[];
+    }
+
+    interface ServerResponse {
+        task: string;
+        succes: boolean;
+        username: string;
     }
 
     function handleListen (): void {
@@ -70,14 +76,24 @@ export namespace HFUTwitter {
         console.log(input);
 
         if (task == "signin") {
+            let responseText: ServerResponse = {"task": task, "succes": false , "username": input.username};
             if (await checkSignin(input).catch(() => {
                 console.log("Check failed!");
             })) {
                 users.insertOne(input);
-                _response.write("signing in");
-            } else {
-                _response.write("username not available");
+                responseText.succes = true;
             }
+            _response.write(JSON.stringify(responseText));
+            _response.end();
+        }
+        if (task == "login") {
+            let responseText: ServerResponse = {"task": task, "succes": false , "username": input.username};
+            if (await checkLogin(input).catch(() => {
+                console.log("Check failed!");
+            })) {
+                responseText.succes = true;
+            }
+            _response.write(JSON.stringify(responseText));
             _response.end();
         }
         

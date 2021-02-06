@@ -51,15 +51,24 @@ var HFUTwitter;
         let input = JSON.parse(jsonString);
         console.log(input);
         if (task == "signin") {
+            let responseText = { "task": task, "succes": false, "username": input.username };
             if (await checkSignin(input).catch(() => {
                 console.log("Check failed!");
             })) {
                 users.insertOne(input);
-                _response.write("signing in");
+                responseText.succes = true;
             }
-            else {
-                _response.write("username not available");
+            _response.write(JSON.stringify(responseText));
+            _response.end();
+        }
+        if (task == "login") {
+            let responseText = { "task": task, "succes": false, "username": input.username };
+            if (await checkLogin(input).catch(() => {
+                console.log("Check failed!");
+            })) {
+                responseText.succes = true;
             }
+            _response.write(JSON.stringify(responseText));
             _response.end();
         }
     }

@@ -5,6 +5,14 @@ namespace HFUTwitter {
         date: Date;
         text: string;
     }
+    interface ServerResponse {
+        task: string;
+        succes: boolean;
+        username: string;
+    }
+    interface User {
+        username: string;
+    }
 
     function getSubpage(): string {
         return window.location.pathname.substring(window.location.pathname.lastIndexOf("/") + 1);
@@ -39,6 +47,33 @@ namespace HFUTwitter {
             await fetch(url).then(async function (response: Response): Promise<void> {
                 let responseText: string = await response.text();
                 console.log(responseText);
+                let responseObj: ServerResponse = JSON.parse(responseText);
+                if (responseObj.task == "signin" && responseObj.succes) {
+                    localStorage.setItem("username", responseObj.username);
+                    window.open("follow.html", "_self");
+                }
+            }
+            );
+        }
+    }
+    //Login Page
+    if (getSubpage() == "index.html") {
+        let buttonSignin: HTMLElement = document.getElementById("submit");
+        buttonSignin.addEventListener("click", handleLogin);
+        async function handleLogin (_event: Event): Promise<void> {
+            let formData: FormData = new FormData(document.forms[0]);
+            let query: URLSearchParams = new URLSearchParams(<any>formData);            
+            let url: string = "https://hfu-twitter.herokuapp.com";
+            url += "/login" + "?" + query.toString();
+
+            await fetch(url).then(async function (response: Response): Promise<void> {
+                let responseText: string = await response.text();
+                console.log(responseText);
+                let responseObj: ServerResponse = JSON.parse(responseText);
+                if (responseObj.task == "login" && responseObj.succes) {
+                    localStorage.setItem("username", responseObj.username);
+                    window.open("feed.html", "_self");
+                }
             }
             );
         }
