@@ -25,13 +25,13 @@ export namespace HFUTwitter {
           });
         console.log("Database connected: " + users != undefined);
     }
-    connectToDatabase(databaseUrl);
 
     let port: number = Number(process.env.PORT);
     if (!port)
         port = 8100;
 
     startServer(port);
+    connectToDatabase(databaseUrl);
 
     function handleListen (): void {
         console.log("listening!");

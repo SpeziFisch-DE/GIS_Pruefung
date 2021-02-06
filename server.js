@@ -25,11 +25,11 @@ var HFUTwitter;
         });
         console.log("Database connected: " + users != undefined);
     }
-    connectToDatabase(databaseUrl);
     let port = Number(process.env.PORT);
     if (!port)
         port = 8100;
     startServer(port);
+    connectToDatabase(databaseUrl);
     function handleListen() {
         console.log("listening!");
     }
