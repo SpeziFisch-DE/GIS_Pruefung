@@ -137,6 +137,14 @@ var HFUTwitter;
             _response.write("unfollowed");
             _response.end();
         }
+        if (task == "checkfollow") {
+            let responseText = { "task": task, "succes": false, "username": input.username };
+            let newFollow = JSON.parse(jsonString);
+            let myUser = await users.findOne({ "username": newFollow.username });
+            responseText.succes = myUser.followingUsers.includes(newFollow.follow);
+            _response.write(JSON.stringify(responseText));
+            _response.end();
+        }
     }
 })(HFUTwitter = exports.HFUTwitter || (exports.HFUTwitter = {}));
 /*

@@ -172,6 +172,14 @@ export namespace HFUTwitter {
             _response.write("unfollowed");
             _response.end();
         }
+        if (task == "checkfollow") {
+            let responseText: ServerResponse = { "task": task, "succes": false, "username": input.username };
+            let newFollow: Follow = JSON.parse(jsonString);
+            let myUser: Userdata = await users.findOne({"username": newFollow.username});
+            responseText.succes = myUser.followingUsers.includes(newFollow.follow);
+            _response.write(JSON.stringify(responseText));
+            _response.end();
+        }
 
     }
 }

@@ -154,7 +154,27 @@ namespace HFUTwitter {
                 let followUser: HTMLButtonElement = document.createElement("button");
                 followUser.setAttribute("type", "button");
                 followUser.setAttribute("name", writeUser[i]);
-                followUser.innerText = "follow";
+                async function checkFollow(_checkUser: string): Promise<boolean> {
+                    let url: string = serverURL;
+                    url += "/checkfollow" + "?username=" + localStorage.getItem("username") + "&follow=" + _checkUser;
+                    console.log(url);
+                    let check: boolean = false;
+                    await fetch(url).then(async function (response: Response): Promise<void> {
+                        let responseText: string = await response.text();
+                        console.log(responseText);
+                        let responseObj: ServerResponse = JSON.parse(responseText);
+                        check = (responseObj.task == "checkfollow" && responseObj.succes);
+                    });
+                    return check;
+                }
+                if (await checkFollow(writeUser[i]).catch(() => {
+                    console.log("Check failed!");
+                })) {
+                    followUser.innerText = "follow";
+                } else {
+                    followUser.innerText = "unfollow";
+                }
+                    
                 followUser.addEventListener("click", handleFollow);
                 async function handleFollow(_event: Event): Promise<void> {
                     let followButton: HTMLButtonElement = <HTMLButtonElement>_event.target;

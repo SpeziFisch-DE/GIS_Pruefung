@@ -130,7 +130,27 @@ var HFUTwitter;
                 let followUser = document.createElement("button");
                 followUser.setAttribute("type", "button");
                 followUser.setAttribute("name", writeUser[i]);
-                followUser.innerText = "follow";
+                async function checkFollow(_checkUser) {
+                    let url = serverURL;
+                    url += "/checkfollow" + "?username=" + localStorage.getItem("username") + "&follow=" + _checkUser;
+                    console.log(url);
+                    let check = false;
+                    await fetch(url).then(async function (response) {
+                        let responseText = await response.text();
+                        console.log(responseText);
+                        let responseObj = JSON.parse(responseText);
+                        check = (responseObj.task == "checkfollow" && responseObj.succes);
+                    });
+                    return check;
+                }
+                if (await checkFollow(writeUser[i]).catch(() => {
+                    console.log("Check failed!");
+                })) {
+                    followUser.innerText = "follow";
+                }
+                else {
+                    followUser.innerText = "unfollow";
+                }
                 followUser.addEventListener("click", handleFollow);
                 async function handleFollow(_event) {
                     let followButton = _event.target;
