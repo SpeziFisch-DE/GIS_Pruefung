@@ -17,7 +17,7 @@ var HFUTwitter;
     let users;
     async function connectToDatabase(_url) {
         let options = { useNewUrlParser: true, useUnifiedTopology: true };
-        let mongoClient = new Mongo.MongoClient(_url, options);
+        let mongoClient = new Mongo.MongoClient(_url);
         await mongoClient.connect();
         users = mongoClient.db("Test").collection("users");
         console.log("Database connected: " + users != undefined);

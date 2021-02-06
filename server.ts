@@ -5,6 +5,7 @@ import * as Mongo from "mongodb";
 export namespace HFUTwitter {
 
     console.log("Starting server");
+
     function startServer(_port: number | string): void {
         let server: Http.Server = Http.createServer();
         server.addListener("request", handleRequest);
@@ -16,7 +17,7 @@ export namespace HFUTwitter {
     let users: Mongo.Collection;
     async function connectToDatabase(_url: string): Promise<void> {
         let options: Mongo.MongoClientOptions = { useNewUrlParser: true, useUnifiedTopology: true };
-        let mongoClient: Mongo.MongoClient = new Mongo.MongoClient(_url, options);
+        let mongoClient: Mongo.MongoClient = new Mongo.MongoClient(_url);
         await mongoClient.connect();
         users = mongoClient.db("Test").collection("users");
         console.log("Database connected: " + users != undefined);
