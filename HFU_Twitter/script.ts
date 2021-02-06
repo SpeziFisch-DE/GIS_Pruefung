@@ -85,7 +85,7 @@ namespace HFUTwitter {
                 let jsonTweets: string = "";
                 let responseText: string = await response.text();
                 console.log(responseText);
-                jsonTweets = responseText;
+                jsonTweets = JSON.stringify(responseText);
                 if (jsonTweets != undefined)
                 tweet = JSON.parse(jsonTweets);
             }
