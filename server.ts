@@ -136,7 +136,7 @@ export namespace HFUTwitter {
         }
         if (task == "readusers") {
             let usersCollection: Mongo.Cursor = users.find();
-            let usersJSONstring: string = JSON.stringify(usersCollection.toArray());
+            let usersJSONstring: string = JSON.stringify(await usersCollection.toArray());
             let usersJSON: Userdata[] = JSON.parse(usersJSONstring);
             let usersArr: string[] = [];
             for (let i: number = 0; i < usersJSON.length; i++) {

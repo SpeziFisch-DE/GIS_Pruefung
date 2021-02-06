@@ -101,7 +101,7 @@ var HFUTwitter;
         }
         if (task == "readusers") {
             let usersCollection = users.find();
-            let usersJSONstring = JSON.stringify(usersCollection.toArray());
+            let usersJSONstring = JSON.stringify(await usersCollection.toArray());
             let usersJSON = JSON.parse(usersJSONstring);
             let usersArr = [];
             for (let i = 0; i < usersJSON.length; i++) {
