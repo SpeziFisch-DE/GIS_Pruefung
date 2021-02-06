@@ -80,6 +80,10 @@ var HFUTwitter;
             _response.write("tweeted");
             _response.end();
         }
+        if (task == "loadtweets") {
+            _response.write("load");
+            _response.end();
+        }
     }
 })(HFUTwitter = exports.HFUTwitter || (exports.HFUTwitter = {}));
 /*
