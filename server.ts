@@ -177,6 +177,11 @@ export namespace HFUTwitter {
             _response.write(JSON.stringify(responseText));
             _response.end();
         }
+        if (task == "readprofil") {
+            let myUser: Userdata = await users.findOne({ "username": input.username});
+            _response.write(JSON.stringify(myUser));
+            _response.end();
+        }
 
     }
 }

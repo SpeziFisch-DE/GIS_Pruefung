@@ -1,9 +1,19 @@
 namespace HFUTwitter {
 
+    interface Userdata {
+        username: string;
+        fieldofstudies: string;
+        semester: string;
+        password: string;
+        tweets: string;
+        followingUsers: string[];
+    }
+
     interface Tweet {
         username: string;
         text: string;
     }
+
     interface ServerResponse {
         task: string;
         succes: boolean;
@@ -180,7 +190,7 @@ namespace HFUTwitter {
                 } else {
                     followUser.innerText = "unfollow";
                 }
-                    
+
                 followUser.addEventListener("click", handleFollow);
                 async function handleFollow(_event: Event): Promise<void> {
                     let followButton: HTMLButtonElement = <HTMLButtonElement>_event.target;
@@ -190,13 +200,34 @@ namespace HFUTwitter {
                     await fetch(url).then(async function (response: Response): Promise<void> {
                         let responseText: string = await response.text();
                         console.log(responseText);
-                        if (followButton.innerText == "follow") {followButton.innerText = "unfollow"; }
-                        else if (followButton.innerText == "unfollow") {followButton.innerText = "follow"; }
+                        if (followButton.innerText == "follow") { followButton.innerText = "unfollow"; }
+                        else if (followButton.innerText == "unfollow") { followButton.innerText = "follow"; }
                     });
                 }
                 newUserDiv.appendChild(followUser);
             }
         }
         writeUsers();
+    }
+    if (getSubpage() == "profil.html") {
+        let usernameEl: HTMLElement = document.getElementById("username")
+        let fieldofstudiesEl: HTMLElement = document.getElementById("fieldofstudies");
+        let semesterEl: HTMLElement = document.getElementById("semester");
+        let passwordEl: HTMLElement = document.getElementById("password");
+        async function readProfil(): Promise<void> {
+            let url: string = serverURL;
+            url += "/readprofil?username=" +  localStorage.getItem("username");
+            console.log(url);
+            await fetch(url).then(async function (response: Response): Promise<void> {
+                let responseText: string = await response.text();
+                console.log(responseText);
+                let myUser: Userdata = JSON.parse(responseText);
+                usernameEl.setAttribute("value", myUser.username);
+                fieldofstudiesEl.setAttribute("value", myUser.fieldofstudies);
+                semesterEl.setAttribute("value", myUser.semester);
+                passwordEl.setAttribute("value", myUser.password);
+            });
+        }
+        readProfil();
     }
 }

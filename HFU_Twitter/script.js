@@ -179,5 +179,26 @@ var HFUTwitter;
         }
         writeUsers();
     }
+    if (getSubpage() == "profil.html") {
+        let usernameEl = document.getElementById("username");
+        let fieldofstudiesEl = document.getElementById("fieldofstudies");
+        let semesterEl = document.getElementById("semester");
+        let passwordEl = document.getElementById("password");
+        async function readProfil() {
+            let url = serverURL;
+            url += "/readprofil?username=" + localStorage.getItem("username");
+            console.log(url);
+            await fetch(url).then(async function (response) {
+                let responseText = await response.text();
+                console.log(responseText);
+                let myUser = JSON.parse(responseText);
+                usernameEl.setAttribute("value", myUser.username);
+                fieldofstudiesEl.setAttribute("value", myUser.fieldofstudies);
+                semesterEl.setAttribute("value", myUser.semester);
+                passwordEl.setAttribute("value", myUser.password);
+            });
+        }
+        readProfil();
+    }
 })(HFUTwitter || (HFUTwitter = {}));
 //# sourceMappingURL=script.js.map
