@@ -47,10 +47,15 @@ export namespace HFUTwitter {
         username: string;
     }
 
+    interface Tweet {
+        username: string;
+        text: string;
+    }
+    //interfaces end
+
     function handleListen (): void {
         console.log("listening!");
     }
-    //interfaces end
 
     async function checkSignin (_input: Userdata): Promise<boolean> {
         let user: Userdata = JSON.parse(JSON.stringify(await users.findOne({ "username": _input.username })));
@@ -94,6 +99,15 @@ export namespace HFUTwitter {
                 responseText.succes = true;
             }
             _response.write(JSON.stringify(responseText));
+            _response.end();
+        }
+        if (task == "tweet") {
+            let tweetingUser: Userdata = await users.findOne({ "username": input.username});
+            let allTweets: Tweet[] = JSON.parse(tweetingUser.tweets);
+            let newTweet: Tweet = JSON.parse(jsonString);
+            allTweets.push(newTweet);
+            tweetingUser.tweets = JSON.stringify(allTweets);
+            _response.write("tweeted");
             _response.end();
         }
         

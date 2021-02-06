@@ -28,10 +28,10 @@ var HFUTwitter;
         port = 8100;
     startServer(port);
     connectToDatabase(databaseUrl);
+    //interfaces end
     function handleListen() {
         console.log("listening!");
     }
-    //interfaces end
     async function checkSignin(_input) {
         let user = JSON.parse(JSON.stringify(await users.findOne({ "username": _input.username })));
         return (user == undefined);
@@ -69,6 +69,15 @@ var HFUTwitter;
                 responseText.succes = true;
             }
             _response.write(JSON.stringify(responseText));
+            _response.end();
+        }
+        if (task == "tweet") {
+            let tweetingUser = await users.findOne({ "username": input.username });
+            let allTweets = JSON.parse(tweetingUser.tweets);
+            let newTweet = JSON.parse(jsonString);
+            allTweets.push(newTweet);
+            tweetingUser.tweets = JSON.stringify(allTweets);
+            _response.write("tweeted");
             _response.end();
         }
     }

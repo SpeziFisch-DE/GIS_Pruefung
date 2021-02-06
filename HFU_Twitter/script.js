@@ -59,5 +59,48 @@ var HFUTwitter;
             });
         }
     }
+    //feed
+    if (getSubpage() == "feed.html") {
+        async function loadTweetJSON() {
+            let tweet = [{ "text": "", "username": "" }];
+            let url = "https://hfu-twitter.herokuapp.com";
+            url += "/loadtweets" + "?username=" + localStorage.getItem("username");
+            await fetch(url).then(async function (response) {
+                let jsonTweets = "";
+                let responseText = await response.text();
+                console.log(responseText);
+                jsonTweets = responseText;
+                tweet = JSON.parse(jsonTweets);
+            });
+            return tweet;
+        }
+        let feedDiv = document.getElementById("feed");
+        async function writeTweets() {
+            let tweets = await loadTweetJSON();
+            for (let i = 0; i < tweets.length; i++) {
+                let newTweet = new HTMLDivElement();
+                newTweet.setAttribute("id", "tweet");
+                newTweet.innerHTML = "<h2>" + tweets[i].username + "</h2><p>" + tweets[i].text + "</p>";
+                feedDiv.appendChild(newTweet);
+            }
+        }
+        writeTweets();
+        let buttonTweet = document.getElementById("tweet");
+        buttonTweet.addEventListener("click", handleLogin);
+        async function handleLogin(_event) {
+            let formData = new FormData(document.forms[0]);
+            let query = new URLSearchParams(formData);
+            let url = "https://hfu-twitter.herokuapp.com";
+            url += "/tweet" + "?" + "username=" + localStorage.getItem("username") + query.toString();
+            await fetch(url).then(async function (response) {
+                let responseText = await response.text();
+                console.log(responseText);
+                let responseObj = JSON.parse(responseText);
+                if (responseObj.task == "tweet" && responseObj.succes) {
+                    console.log("tweeted");
+                }
+            });
+        }
+    }
 })(HFUTwitter || (HFUTwitter = {}));
 //# sourceMappingURL=script.js.map
