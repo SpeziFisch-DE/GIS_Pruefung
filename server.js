@@ -101,12 +101,13 @@ var HFUTwitter;
         }
         if (task == "readusers") {
             let usersCollection = users.find();
-            let usersJSON = JSON.parse(JSON.stringify(usersCollection.toArray()));
+            let usersJSONstring = JSON.stringify(usersCollection.toArray());
+            let usersJSON = JSON.parse(usersJSONstring);
             let usersArr = [];
             for (let i = 0; i < usersJSON.length; i++) {
                 usersArr.push(usersJSON[i].username);
             }
-            console.log(usersJSON);
+            console.log(usersJSONstring);
             _response.write(JSON.stringify(usersArr));
             _response.end();
         }
