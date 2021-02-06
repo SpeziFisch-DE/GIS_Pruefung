@@ -55,6 +55,8 @@ var HFUTwitter;
             if (await checkSignin(input).catch(() => {
                 console.log("Check failed!");
             })) {
+                input.tweets = "[{}]";
+                input.followingUsers = [];
                 users.insertOne(input);
                 responseText.succes = true;
             }
