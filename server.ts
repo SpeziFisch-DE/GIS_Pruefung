@@ -105,8 +105,11 @@ export namespace HFUTwitter {
             let tweetingUser: Userdata = await users.findOne({ "username": input.username});
             let allTweets: Tweet[] = JSON.parse(tweetingUser.tweets);
             let newTweet: Tweet = JSON.parse(jsonString);
+            console.log(allTweets);
             allTweets.push(newTweet);
+            console.log(allTweets);
             tweetingUser.tweets = JSON.stringify(allTweets);
+            console.log(tweetingUser.tweets);
             _response.write("tweeted");
             _response.end();
         }

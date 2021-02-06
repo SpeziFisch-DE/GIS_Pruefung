@@ -6,6 +6,7 @@ var HFUTwitter;
     }
     //navigation
     if (getSubpage() == "index.html") {
+        localStorage.clear();
         let buttonToSignin = document.getElementById("toSignin");
         buttonToSignin.addEventListener("click", handleToSignin);
         function handleToSignin(_event) {
@@ -13,6 +14,7 @@ var HFUTwitter;
         }
     }
     if (getSubpage() == "signin.html") {
+        localStorage.clear();
         let buttonToLogin = document.getElementById("toLogin");
         buttonToLogin.addEventListener("click", handleToSignin);
         function handleToSignin(_event) {

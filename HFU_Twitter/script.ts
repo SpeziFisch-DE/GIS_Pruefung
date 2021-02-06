@@ -16,6 +16,7 @@ namespace HFUTwitter {
 
     //navigation
     if (getSubpage() == "index.html") {
+        localStorage.clear();
         let buttonToSignin: HTMLElement = document.getElementById("toSignin");
         buttonToSignin.addEventListener("click", handleToSignin);
         function handleToSignin(_event: Event): void {
@@ -23,6 +24,7 @@ namespace HFUTwitter {
         }
     }
     if (getSubpage() == "signin.html") {
+        localStorage.clear();
         let buttonToLogin: HTMLElement = document.getElementById("toLogin");
         buttonToLogin.addEventListener("click", handleToSignin);
         function handleToSignin(_event: Event): void {
