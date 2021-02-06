@@ -55,8 +55,8 @@ var HFUTwitter;
             if (await checkSignin(input).catch(() => {
                 console.log("Check failed!");
             })) {
-                input.tweets = "[{}]";
-                input.followingUsers = [];
+                input.tweets = "[]";
+                input.followingUsers = [input.username];
                 users.insertOne(input);
                 responseText.succes = true;
             }
@@ -87,7 +87,16 @@ var HFUTwitter;
             _response.end();
         }
         if (task == "loadtweets") {
-            _response.write("[]");
+            let showingTweets = [];
+            let loadingUser = await users.findOne({ "username": input.username });
+            for (let i = 0; i < loadingUser.followingUsers.length; i++) {
+                let follows = await users.findOne({ "username": loadingUser.followingUsers[i] });
+                let followTweets = JSON.parse(follows.tweets);
+                for (let j = 0; j < followTweets.length; j++) {
+                    showingTweets.push(followTweets[j]);
+                }
+            }
+            _response.write(JSON.stringify(showingTweets));
             _response.end();
         }
     }
