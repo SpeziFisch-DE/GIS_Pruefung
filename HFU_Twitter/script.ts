@@ -117,10 +117,6 @@ namespace HFUTwitter {
             await fetch(url).then(async function (response: Response): Promise<void> {
                 let responseText: string = await response.text();
                 console.log(responseText);
-                let responseObj: ServerResponse = JSON.parse(responseText);
-                if (responseObj.task == "tweet" && responseObj.succes) {
-                    console.log("tweeted");
-                }
             }
             );
         }

@@ -97,10 +97,6 @@ var HFUTwitter;
             await fetch(url).then(async function (response) {
                 let responseText = await response.text();
                 console.log(responseText);
-                let responseObj = JSON.parse(responseText);
-                if (responseObj.task == "tweet" && responseObj.succes) {
-                    console.log("tweeted");
-                }
             });
         }
     }
