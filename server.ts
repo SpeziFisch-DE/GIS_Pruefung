@@ -1,7 +1,7 @@
 import * as Http from "http";
 import * as Url from "url";
 import * as Mongo from "mongodb";
-
+/*
 export namespace HFUTwitter {
 
     console.log("Starting server");
@@ -51,8 +51,7 @@ export namespace HFUTwitter {
         }
         
     }
-}
-/*
+}*/
 export namespace P_3_1Server {
     console.log("Starting server");
 
@@ -186,4 +185,3 @@ export namespace P_3_1Server {
         }
     }
 }
-    */
