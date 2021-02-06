@@ -222,12 +222,25 @@ namespace HFUTwitter {
                 let responseText: string = await response.text();
                 console.log(responseText);
                 let myUser: Userdata = JSON.parse(responseText);
-                usernameEl.setAttribute("value", myUser.username);
+                usernameEl.innerText = myUser.username;
                 fieldofstudiesEl.setAttribute("value", myUser.fieldofstudies);
                 semesterEl.setAttribute("value", myUser.semester);
                 passwordEl.setAttribute("value", myUser.password);
             });
         }
         readProfil();
+        let changesButton: HTMLElement = document.getElementById("save");
+        changesButton.addEventListener("click", handleChanges);
+        async function handleChanges(_event: Event): Promise<void> {
+            let formData: FormData = new FormData(document.forms[0]);
+            let query: URLSearchParams = new URLSearchParams(<any>formData);
+            let url: string = serverURL;
+            url += "/change?username=" + localStorage.getItem("username") + "&" + query.toString();
+            console.log(url);
+            await fetch(url).then(async function (response: Response): Promise<void> {
+                let responseText: string = await response.text();
+                console.log(responseText);
+            });
+        }
     }
 }

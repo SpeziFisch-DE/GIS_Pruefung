@@ -192,13 +192,26 @@ var HFUTwitter;
                 let responseText = await response.text();
                 console.log(responseText);
                 let myUser = JSON.parse(responseText);
-                usernameEl.setAttribute("value", myUser.username);
+                usernameEl.innerText = myUser.username;
                 fieldofstudiesEl.setAttribute("value", myUser.fieldofstudies);
                 semesterEl.setAttribute("value", myUser.semester);
                 passwordEl.setAttribute("value", myUser.password);
             });
         }
         readProfil();
+        let changesButton = document.getElementById("save");
+        changesButton.addEventListener("click", handleChanges);
+        async function handleChanges(_event) {
+            let formData = new FormData(document.forms[0]);
+            let query = new URLSearchParams(formData);
+            let url = serverURL;
+            url += "/change?username=" + localStorage.getItem("username") + "&" + query.toString();
+            console.log(url);
+            await fetch(url).then(async function (response) {
+                let responseText = await response.text();
+                console.log(responseText);
+            });
+        }
     }
 })(HFUTwitter || (HFUTwitter = {}));
 //# sourceMappingURL=script.js.map

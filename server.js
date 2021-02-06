@@ -147,6 +147,15 @@ var HFUTwitter;
             _response.write(JSON.stringify(myUser));
             _response.end();
         }
+        if (task == "change") {
+            let myUser = await users.findOne({ "username": input.username });
+            myUser.fieldofstudies = input.fieldofstudies;
+            myUser.semester = input.semester;
+            myUser.password = input.password;
+            await users.findOneAndReplace({ "username": input.username }, myUser);
+            _response.write("changed");
+            _response.end();
+        }
     }
 })(HFUTwitter = exports.HFUTwitter || (exports.HFUTwitter = {}));
 /*
