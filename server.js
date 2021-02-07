@@ -22,6 +22,8 @@ var HFUTwitter;
         await mongoClient.connect();
         users = mongoClient.db("Test").collection("userdata");
         console.log("Database connected: " + users != undefined);
+        let testuser = JSON.parse(await users.findOne({ "username": "testuser" }));
+        console.log(testuser);
     }
     let port = Number(process.env.PORT);
     if (!port)

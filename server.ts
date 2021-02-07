@@ -21,6 +21,8 @@ export namespace HFUTwitter {
         await mongoClient.connect();
         users = mongoClient.db("Test").collection("userdata");
         console.log("Database connected: " + users != undefined);
+        let testuser: Userdata = JSON.parse(await users.findOne({"username": "testuser"}));
+        console.log(testuser);
     }
 
     let port: number = Number(process.env.PORT);
