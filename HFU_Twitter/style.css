@@ -17,7 +17,7 @@ form div {
 }
 form div input {
     display: inline;
-    margin-right: 40%;
+    margin-right: 20%;
 }
 label {
     margin-right: 20px;
@@ -28,11 +28,95 @@ textarea {
     width: 300px;
     height: 60px;
 }
-button#tweet {
+#tweet {
     position: relative;
     margin-top: 10px;
     width: 50px;
     right: -125px;
+}
+#feed {
+    margin: auto;
+    margin-top: 40px;
+    width: 550px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    background-color: aqua;
+    border: solid aqua 1px;
+    border-radius: 10px;
+}
+#newtweet {
+    margin: auto;
+    margin-top: 40px;
+    width: 350px;
+    padding-bottom: 20px;
+    background-color: aqua;
+    border: solid aqua 1px;
+    border-radius: 10px;
+}
+#newtweet h3 {
+    text-align: left;
+    margin-left: 30px;
+}
+.tweet {
+    margin: auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: 500px;
+    background-color: white;
+    border: solid black 1px;
+    border-radius: 10px;
+    text-align: left;
+    
+}
+.tweet h2 {
+    padding: 5px;
+    margin: 0px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    background-color: lightblue;
+    border-bottom: solid black 1px;
+    font-size: medium;
+}
+.tweet p {
+    margin-top: 5px;
+    margin-left: 10px;
+}
+#follow {
+    text-align: center;
+}
+.user {
+    width: 400px;
+    text-align: right;
+    margin-top: 10px;
+    margin-left: 30%;
+    padding: 10px;
+    background-color: aqua;
+    border-radius: 10px;
+}
+.user p {
+    text-align: left;
+    width: fit-content;
+    margin: 0px;
+    padding: 5px;
+    background-color: whitesmoke;
+    border-radius: 5px;
+    border: solid black 1px;
+}
+.user button {
+    margin-right: 1%;
+}
+#profil {
+    margin: auto;
+    width: 400px;
+    padding-top: 10px;
+    padding-bottom: 50px;
+    background-color: aqua;
+    border-radius: 10px;
+}
+#username {
+    margin: auto;
+    margin-bottom: 20px;
+    font-size: x-large;
 }
 nav {
     margin: auto;
@@ -45,4 +129,34 @@ nav {
 }
 nav a {
     margin-right: 20px;
+}
+nav h2 {
+    position: absolute;
+    left: 30px;
+    top: -30px;
+    font-size: xxx-large;
+    color: white;
+}
+header h3 {
+    text-align: left;
+    margin-top: 0px;
+    margin-left: 10px;
+    font-size: xx-large;
+}
+main form.register {
+    margin: auto;
+    margin-top: 30%;
+    padding-bottom: 40px;
+    padding-top: 10px;
+    width: 300px;
+    background-color: aqua;
+    border-radius: 10px;
+}
+main form.register p {
+    margin-bottom: 10px;
+    margin-top: 0px;
+}
+header {
+    position: sticky;
+    top: 0px;
 }
