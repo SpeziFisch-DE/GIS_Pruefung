@@ -30,16 +30,23 @@ var HFUTwitter;
             let formData = new FormData(document.forms[0]);
             let query = new URLSearchParams(formData);
             let url = serverURL;
-            url += "/signin" + "?" + query.toString();
-            await fetch(url).then(async function (response) {
-                let responseText = await response.text();
-                console.log(responseText);
-                let responseObj = JSON.parse(responseText);
-                if (responseObj.task == "signin" && responseObj.succes) {
-                    localStorage.setItem("username", responseObj.username);
-                    window.open("follow.html", "_self");
-                }
-            });
+            if ((query.get("username").length > 3) && (query.get("fieldofstudies").length > 1) && (query.get("semester").length > 0) && (query.get("password").length > 3)) {
+                url += "/signin" + "?" + query.toString();
+                await fetch(url).then(async function (response) {
+                    let responseText = await response.text();
+                    console.log(responseText);
+                    let responseObj = JSON.parse(responseText);
+                    if (responseObj.task == "signin" && responseObj.succes) {
+                        localStorage.setItem("username", responseObj.username);
+                        window.open("follow.html", "_self");
+                    }
+                });
+            }
+            else {
+                console.log("entries not valid");
+                let errorP = document.getElementById("error");
+                errorP.innerText = "entries not valid";
+            }
         }
     }
     //Login Page
@@ -50,16 +57,28 @@ var HFUTwitter;
             let formData = new FormData(document.forms[0]);
             let query = new URLSearchParams(formData);
             let url = serverURL;
-            url += "/login" + "?" + query.toString();
-            await fetch(url).then(async function (response) {
-                let responseText = await response.text();
-                console.log(responseText);
-                let responseObj = JSON.parse(responseText);
-                if (responseObj.task == "login" && responseObj.succes) {
-                    localStorage.setItem("username", responseObj.username);
-                    window.open("feed.html", "_self");
-                }
-            });
+            if ((query.get("username").length > 3 && (query.get("password").length > 3))) {
+                url += "/login" + "?" + query.toString();
+                await fetch(url).then(async function (response) {
+                    let responseText = await response.text();
+                    console.log(responseText);
+                    let responseObj = JSON.parse(responseText);
+                    if (responseObj.task == "login" && responseObj.succes) {
+                        localStorage.setItem("username", responseObj.username);
+                        window.open("feed.html", "_self");
+                    }
+                    else {
+                        console.log("wrong username and/or password");
+                        let errorP = document.getElementById("error");
+                        errorP.innerText = "wrong username and/or password";
+                    }
+                });
+            }
+            else {
+                console.log("entries not valid");
+                let errorP = document.getElementById("error");
+                errorP.innerText = "entries not valid";
+            }
         }
     }
     //feed
@@ -89,18 +108,32 @@ var HFUTwitter;
             }
         }
         writeTweets();
+        let tweetBox = document.getElementById("text");
+        let letterCount = document.getElementById("letters");
+        tweetBox.addEventListener("input", handleWriting);
+        function handleWriting(_event) {
+            let eventBox = _event.currentTarget;
+            letterCount.innerText = eventBox.value.length + "/80 letters";
+        }
         let buttonTweet = document.getElementById("tweet");
         buttonTweet.addEventListener("click", handleLogin);
         async function handleLogin(_event) {
             let formData = new FormData(document.forms[0]);
             let query = new URLSearchParams(formData);
             let url = serverURL;
-            url += "/tweet" + "?" + "username=" + localStorage.getItem("username") + "&" + query.toString();
-            await fetch(url).then(async function (response) {
-                let responseText = await response.text();
-                console.log(responseText);
-                window.open("feed.html", "_self");
-            });
+            if ((0 < query.get("text").length) && (query.get("text").length < 81)) {
+                url += "/tweet" + "?" + "username=" + localStorage.getItem("username") + "&" + query.toString();
+                await fetch(url).then(async function (response) {
+                    let responseText = await response.text();
+                    console.log(responseText);
+                    window.open("feed.html", "_self");
+                });
+            }
+            else {
+                console.log("tweet is too long or contains no letters!");
+                let errorP = document.getElementById("error");
+                errorP.innerText = "tweet is too long or contains no letters!";
+            }
         }
     }
     if (getSubpage() == "follow.html") {
@@ -207,10 +240,17 @@ var HFUTwitter;
             let url = serverURL;
             url += "/change?username=" + localStorage.getItem("username") + "&" + query.toString();
             console.log(url);
-            await fetch(url).then(async function (response) {
-                let responseText = await response.text();
-                console.log(responseText);
-            });
+            if ((query.get("fieldofstudies").length > 1) && (query.get("semester").length > 0) && (query.get("password").length > 3)) {
+                await fetch(url).then(async function (response) {
+                    let responseText = await response.text();
+                    console.log(responseText);
+                });
+            }
+            else {
+                console.log("entries not valid");
+                let errorP = document.getElementById("error");
+                errorP.innerText = "entries not valid";
+            }
         }
     }
 })(HFUTwitter || (HFUTwitter = {}));

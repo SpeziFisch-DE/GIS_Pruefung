@@ -57,6 +57,12 @@ textarea {
     text-align: left;
     margin-left: 30px;
 }
+#letters {
+    position: relative;
+    top: 5px;
+    left: 115px;
+    margin: auto;
+}
 .tweet {
     margin: auto;
     margin-top: 10px;
@@ -145,7 +151,7 @@ header h3 {
 }
 main form.register {
     margin: auto;
-    margin-top: 30%;
+    margin-top: 20%;
     padding-bottom: 40px;
     padding-top: 10px;
     width: 300px;

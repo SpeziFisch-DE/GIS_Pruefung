@@ -52,18 +52,24 @@ namespace HFUTwitter {
             let formData: FormData = new FormData(document.forms[0]);
             let query: URLSearchParams = new URLSearchParams(<any>formData);
             let url: string = serverURL;
-            url += "/signin" + "?" + query.toString();
+            if ((query.get("username").length > 3) && (query.get("fieldofstudies").length > 1) && (query.get("semester").length > 0) && (query.get("password").length > 3)) {
+                url += "/signin" + "?" + query.toString();
 
-            await fetch(url).then(async function (response: Response): Promise<void> {
-                let responseText: string = await response.text();
-                console.log(responseText);
-                let responseObj: ServerResponse = JSON.parse(responseText);
-                if (responseObj.task == "signin" && responseObj.succes) {
-                    localStorage.setItem("username", responseObj.username);
-                    window.open("follow.html", "_self");
+                await fetch(url).then(async function (response: Response): Promise<void> {
+                    let responseText: string = await response.text();
+                    console.log(responseText);
+                    let responseObj: ServerResponse = JSON.parse(responseText);
+                    if (responseObj.task == "signin" && responseObj.succes) {
+                        localStorage.setItem("username", responseObj.username);
+                        window.open("follow.html", "_self");
+                    }
                 }
+                );
+            } else {
+                console.log("entries not valid");
+                let errorP: HTMLElement = document.getElementById("error");
+                errorP.innerText = "entries not valid";
             }
-            );
         }
     }
     //Login Page
@@ -74,18 +80,28 @@ namespace HFUTwitter {
             let formData: FormData = new FormData(document.forms[0]);
             let query: URLSearchParams = new URLSearchParams(<any>formData);
             let url: string = serverURL;
-            url += "/login" + "?" + query.toString();
+            if ((query.get("username").length > 3 && (query.get("password").length > 3))) {
+                url += "/login" + "?" + query.toString();
 
-            await fetch(url).then(async function (response: Response): Promise<void> {
-                let responseText: string = await response.text();
-                console.log(responseText);
-                let responseObj: ServerResponse = JSON.parse(responseText);
-                if (responseObj.task == "login" && responseObj.succes) {
-                    localStorage.setItem("username", responseObj.username);
-                    window.open("feed.html", "_self");
+                await fetch(url).then(async function (response: Response): Promise<void> {
+                    let responseText: string = await response.text();
+                    console.log(responseText);
+                    let responseObj: ServerResponse = JSON.parse(responseText);
+                    if (responseObj.task == "login" && responseObj.succes) {
+                        localStorage.setItem("username", responseObj.username);
+                        window.open("feed.html", "_self");
+                    } else {
+                        console.log("wrong username and/or password");
+                        let errorP: HTMLElement = document.getElementById("error");
+                        errorP.innerText = "wrong username and/or password";
+                    }
                 }
+                );
+            } else {
+                console.log("entries not valid");
+                let errorP: HTMLElement = document.getElementById("error");
+                errorP.innerText = "entries not valid";
             }
-            );
         }
     }
     //feed
@@ -119,20 +135,33 @@ namespace HFUTwitter {
         }
         writeTweets();
 
+        let tweetBox: HTMLElement = document.getElementById("text");
+        let letterCount: HTMLElement = document.getElementById("letters");
+        tweetBox.addEventListener("input", handleWriting);
+        function handleWriting (_event: Event): void {
+            let eventBox: HTMLTextAreaElement = <HTMLTextAreaElement>_event.currentTarget;
+            letterCount.innerText = eventBox.value.length + "/80 letters";
+        }
         let buttonTweet: HTMLElement = document.getElementById("tweet");
         buttonTweet.addEventListener("click", handleLogin);
         async function handleLogin(_event: Event): Promise<void> {
             let formData: FormData = new FormData(document.forms[0]);
             let query: URLSearchParams = new URLSearchParams(<any>formData);
             let url: string = serverURL;
-            url += "/tweet" + "?" + "username=" + localStorage.getItem("username") + "&" + query.toString();
+            if ((0 < query.get("text").length) && (query.get("text").length < 81)) {
+                url += "/tweet" + "?" + "username=" + localStorage.getItem("username") + "&" + query.toString();
 
-            await fetch(url).then(async function (response: Response): Promise<void> {
-                let responseText: string = await response.text();
-                console.log(responseText);
-                window.open("feed.html", "_self");
+                await fetch(url).then(async function (response: Response): Promise<void> {
+                    let responseText: string = await response.text();
+                    console.log(responseText);
+                    window.open("feed.html", "_self");
+                }
+                );
+            } else {
+                console.log("tweet is too long or contains no letters!");
+                let errorP: HTMLElement = document.getElementById("error");
+                errorP.innerText = "tweet is too long or contains no letters!";
             }
-            );
         }
     }
     if (getSubpage() == "follow.html") {
@@ -216,7 +245,7 @@ namespace HFUTwitter {
         let passwordEl: HTMLElement = document.getElementById("password");
         async function readProfil(): Promise<void> {
             let url: string = serverURL;
-            url += "/readprofil?username=" +  localStorage.getItem("username");
+            url += "/readprofil?username=" + localStorage.getItem("username");
             console.log(url);
             await fetch(url).then(async function (response: Response): Promise<void> {
                 let responseText: string = await response.text();
@@ -237,10 +266,16 @@ namespace HFUTwitter {
             let url: string = serverURL;
             url += "/change?username=" + localStorage.getItem("username") + "&" + query.toString();
             console.log(url);
-            await fetch(url).then(async function (response: Response): Promise<void> {
-                let responseText: string = await response.text();
-                console.log(responseText);
-            });
+            if ((query.get("fieldofstudies").length > 1) && (query.get("semester").length > 0) && (query.get("password").length > 3)) {
+                await fetch(url).then(async function (response: Response): Promise<void> {
+                    let responseText: string = await response.text();
+                    console.log(responseText);
+                });
+            } else {
+                console.log("entries not valid");
+                let errorP: HTMLElement = document.getElementById("error");
+                errorP.innerText = "entries not valid";
+            }
         }
     }
 }
