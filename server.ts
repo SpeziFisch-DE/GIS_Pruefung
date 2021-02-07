@@ -21,10 +21,6 @@ export namespace HFUTwitter {
         await mongoClient.connect();
         users = mongoClient.db("Test").collection("userdata");
         console.log("Database connected: " + users != undefined);
-        let testuser: Userdata = JSON.parse(await users.findOne({"username": "testuser"}).catch(() => {
-            console.log("Check failed!");
-        }));
-        console.log(testuser);
     }
 
     let port: number = Number(process.env.PORT);
@@ -135,6 +131,10 @@ export namespace HFUTwitter {
                     showingTweets.push(followTweets[j]);
                 }
             }
+            let testuser: Userdata = JSON.parse(await users.findOne({ "username": "testuser" }).catch(() => {
+                console.log("Check failed!");
+            }));
+            console.log(testuser);
             _response.write(JSON.stringify(showingTweets));
             _response.end();
         }
@@ -176,18 +176,18 @@ export namespace HFUTwitter {
         if (task == "checkfollow") {
             let responseText: ServerResponse = { "task": task, "succes": false, "username": input.username };
             let newFollow: Follow = JSON.parse(jsonString);
-            let myUser: Userdata = await users.findOne({"username": newFollow.username});
+            let myUser: Userdata = await users.findOne({ "username": newFollow.username });
             responseText.succes = myUser.followingUsers.includes(newFollow.follow);
             _response.write(JSON.stringify(responseText));
             _response.end();
         }
         if (task == "readprofil") {
-            let myUser: Userdata = await users.findOne({ "username": input.username});
+            let myUser: Userdata = await users.findOne({ "username": input.username });
             _response.write(JSON.stringify(myUser));
             _response.end();
         }
         if (task == "change") {
-            let myUser: Userdata = await users.findOne({ "username": input.username});
+            let myUser: Userdata = await users.findOne({ "username": input.username });
             myUser.fieldofstudies = input.fieldofstudies;
             myUser.semester = input.semester;
             myUser.password = input.password;
