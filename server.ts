@@ -124,6 +124,7 @@ export namespace HFUTwitter {
         if (task == "loadtweets") {
             let showingTweets: Tweet[] = [];
             let loadingUser: Userdata = await users.findOne({ "username": input.username });
+            console.log(loadingUser);
             for (let i: number = 0; i < loadingUser.followingUsers.length; i++) {
                 let follows: Userdata = await users.findOne({ "username": loadingUser.followingUsers[i] });
                 let followTweets: Tweet[] = JSON.parse(follows.tweets);

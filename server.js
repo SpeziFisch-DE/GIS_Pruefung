@@ -89,6 +89,7 @@ var HFUTwitter;
         if (task == "loadtweets") {
             let showingTweets = [];
             let loadingUser = await users.findOne({ "username": input.username });
+            console.log(loadingUser);
             for (let i = 0; i < loadingUser.followingUsers.length; i++) {
                 let follows = await users.findOne({ "username": loadingUser.followingUsers[i] });
                 let followTweets = JSON.parse(follows.tweets);
