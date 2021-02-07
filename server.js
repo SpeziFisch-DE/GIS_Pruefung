@@ -96,10 +96,6 @@ var HFUTwitter;
                     showingTweets.push(followTweets[j]);
                 }
             }
-            let testuser = JSON.parse(await users.findOne({ "username": "testuser" }).catch(() => {
-                console.log("Check failed!");
-            }));
-            console.log(testuser);
             _response.write(JSON.stringify(showingTweets));
             _response.end();
         }

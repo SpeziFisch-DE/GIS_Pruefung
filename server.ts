@@ -131,10 +131,6 @@ export namespace HFUTwitter {
                     showingTweets.push(followTweets[j]);
                 }
             }
-            let testuser: Userdata = JSON.parse(await users.findOne({ "username": "testuser" }).catch(() => {
-                console.log("Check failed!");
-            }));
-            console.log(testuser);
             _response.write(JSON.stringify(showingTweets));
             _response.end();
         }
