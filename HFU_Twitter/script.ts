@@ -112,7 +112,7 @@ namespace HFUTwitter {
             let tweets: Tweet[] = await loadTweetJSON();
             for (let i: number = 0; i < tweets.length; i++) {
                 let newTweet: HTMLElement = document.createElement("div");
-                newTweet.setAttribute("id", "tweet");
+                newTweet.setAttribute("class", "tweet");
                 newTweet.innerHTML = "<h2>" + tweets[i].username + "</h2><p>" + tweets[i].text + "</p>";
                 feedDiv.appendChild(newTweet);
             }
