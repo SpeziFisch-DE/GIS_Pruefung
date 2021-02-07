@@ -42,7 +42,8 @@ namespace HFUTwitter {
         }
     }
 
-    let serverURL: string = "https://hfu-twitter.herokuapp.com";
+    //let serverURL: string = "https://hfu-twitter.herokuapp.com";
+    let serverURL: string = "http://localhost:8100/";
 
     //Sign In Page
     if (getSubpage() == "signin.html") {

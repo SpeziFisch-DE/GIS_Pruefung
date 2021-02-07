@@ -21,7 +21,8 @@ var HFUTwitter;
             window.open("index.html", "_self");
         }
     }
-    let serverURL = "https://hfu-twitter.herokuapp.com";
+    //let serverURL: string = "https://hfu-twitter.herokuapp.com";
+    let serverURL = "http://localhost:8100/";
     //Sign In Page
     if (getSubpage() == "signin.html") {
         let buttonSignin = document.getElementById("submit");
