@@ -144,8 +144,8 @@ namespace HFUTwitter {
             letterCount.innerText = eventBox.value.length + "/80 letters";
         }
         let buttonTweet: HTMLElement = document.getElementById("tweet");
-        buttonTweet.addEventListener("click", handleLogin);
-        async function handleLogin(_event: Event): Promise<void> {
+        buttonTweet.addEventListener("click", handleTweet);
+        async function handleTweet(_event: Event): Promise<void> {
             let formData: FormData = new FormData(document.forms[0]);
             let query: URLSearchParams = new URLSearchParams(<any>formData);
             let url: string = serverURL;
