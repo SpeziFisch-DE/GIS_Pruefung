@@ -240,7 +240,7 @@ namespace HFUTwitter {
         writeUsers();
     }
     if (getSubpage() == "profil.html") {
-        let usernameEl: HTMLElement = document.getElementById("username")
+        let usernameEl: HTMLElement = document.getElementById("username");
         let fieldofstudiesEl: HTMLElement = document.getElementById("fieldofstudies");
         let semesterEl: HTMLElement = document.getElementById("semester");
         let passwordEl: HTMLElement = document.getElementById("password");
